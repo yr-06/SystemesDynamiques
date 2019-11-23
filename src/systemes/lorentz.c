@@ -37,7 +37,7 @@ float param_init()//float dt; float sigma ; float rho ; float beta
 	return sigma , rho, beta;
 }
 
-float traj_p(float p.x, float p.y, float p.z)
+float traj_p(float p.x , float p.y, float p.z)
 {
 	float dx=sigma*(p.y-p.x)*dt;
 	float dy=(p.x*((rho-p.z)-p.y))*dt;
@@ -75,7 +75,7 @@ float traj_p(float p.x, float p.y, float p.z)
 }
 int main( int argc, char * argv[])
 {
-	res=traj_p(0., float p.y, float p.z)
+	float res=traj_p(.3, 2.0, 3.2);
 }
 /*...vit_p(point p)
 {
