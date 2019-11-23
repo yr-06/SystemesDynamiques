@@ -75,7 +75,7 @@ float traj_p(float p.x, float p.y, float p.z)
 }
 int main( int argc, char * argv[])
 {
-	
+	res=traj_p(0., float p.y, float p.z)
 }
 /*...vit_p(point p)
 {
