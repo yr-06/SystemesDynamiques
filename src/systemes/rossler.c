@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "../include/point.h"
+#include "../include/rossler.h"
 
 /*Equation de Rossler:
 dx/dt=-y-z
@@ -13,11 +15,25 @@ a=0.2 ou 0.1
 b=0.2 ou 0.1
 c=5.7 ou c=14*/ 
 
-float param_init(){
+void setup_rossler(point p){
+
+	FILE*f=NULL;
+	FILE*v=NULL;
+	FILE*vit=NULL;
+	f=fopen("rossler.dat","w+");
+	v=fopen("Valeurs_ross.txt","w+");
+	vit=fopen("vitesse_rossler.dat","w+");
 	
-	float a;
-	float b;
-	float c;
+	param_init_rossler(v);
+	traj_p(p);
+	fclose(f);
+	set parametric;
+	gnuplot(f);
+}
+
+void param_init_rossler(FILE*v){
+	
+	float a,b,c;
 	
 	printf("Entrez la valeur de a")
 	scanf("%f", &a);
@@ -29,8 +45,82 @@ float param_init(){
 	
 	printf("Entrez la valeur de c")
 	scanf("%f", &c)
-	
-	return a, b, c;
+	fprintf(f,"%f %f %f\n",a,b,c);
 }
 
+void traj_p(FILE*v, FILE*f, point p)
+{	float a,b,c,x,y,z;
+	fscanf(v,"%f %f %f",&a,&b,&c);
+	float dx=(-p.y-p.z)*dt;
+	float dy=(p.x+a*p.y)*dt;
+	float dz=(b+(p.z*p.x-c))*dt;
+	float n=tmax/dt;
+    float temps;
+	int c=ceil(n);
+    int r=floor(n);
+    for (int i=0;i<c; i++)
+	{
+		x=p.x+i*dx;
+		y=p.y+i*dy;
+		z=p.z+i*dz;
+        temps=i*dt;
+        fprintf(f,"%f\t %f\t %f\t %f\n", temps,x,y,z);
+				
+	}
+		
+	if ((r*dt)!=tmax)
+	{
+		x=p.x+n*dx;
+		y=p.y+n*dy;
+		z=p.z+n*dz;
+        temps=tmax;
+        fprintf(f,"%f\t %f\ %f\t %f\n", temps,x,y,z);
+	}
+}
+		
 
+
+/*void vitesse_systeme_rossler(FILE*v,point *p){
+	float a,b,c ;
+	fscanf(v,"%f %f %f",&a,&b,&c);
+
+	float vx, vy,vz, module; 
+	
+	float n=tmax/dt;
+    float temps=0;
+	int c=ceil(n);
+    int r=floor(n);
+    
+    for (int i=0;i<c; i++)
+	{
+		if (i=0)
+			{
+				vx=-p.y-p.z;
+	 			vy=p.x+a*p.y;
+	 			vz=b+p.z(p.x-c);
+	 			module=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
+				fprintf(f,"%.3f\t %.3f\t %.3f\t %.3f\t %.3f\n", temps,vx,vy,vz,module);
+			}
+	
+			else 
+			{
+				vx=vx+i*dx/dt;
+				vy=vy+i*dy/dt;
+				vz=vz+i*dz/dt;
+            	temps=i*dt;
+            	fprintf(f,"%f\t %f\t %f\t %f\t %f\n", temps,vx,vy,vz, module);
+				
+			}
+		
+			if ((r*dt)!=tmax)
+			{
+				vx=vx+c*dx/dt;
+				vy=vy+c*dy/dt;
+				vz=vz+c*dz/dt;
+                temps=c*dt;
+                fprintf(f,"%f %f %f %f %f\n", temps,vx,vy,vz, module);
+			}
+		}
+		fclose(f);
+	}
+*/
