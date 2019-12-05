@@ -15,7 +15,7 @@ a=0.2 ou 0.1
 b=0.2 ou 0.1
 c=5.7 ou c=14*/ 
 
-void setup_rossler(point p){
+void setup_rossler(point *p){
 
 	FILE*f=NULL;
 	FILE*v=NULL;

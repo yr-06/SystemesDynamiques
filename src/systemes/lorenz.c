@@ -88,7 +88,7 @@ void vitesse_systeme_lorenz(FILE*v, FILE*vit, point *p){
     int i=0;
     fscanf(v,"%f %f %f",&sigma,&rho,&beta);
 	
-    while(fscanf(f,"%f\t %f\t %f\t %f\t",&temps,&x,&y,&z)!=NULL) {
+    while(fscanf(f,"%f\t %f\t %f\t %f\n",&temps,&x,&y,&z)!=NULL) {
     	
     	if (i<c)
     	{

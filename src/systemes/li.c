@@ -19,7 +19,7 @@ k=55
 f=20
 */
 
-void setup_Li(point p){
+void setup_Li(point *p){
 	
 	FILE*f=NULL;
 	FILE*v=NULL;
@@ -28,15 +28,15 @@ void setup_Li(point p){
 	v=fopen("Valeurs_li.txt","w+");
 	vit=fopen("vitesse_li.dat","w+");
 	
-	init_param_li(f);
+	init_param_li(v);
 	traj_p(f, v, p);
 	
 	//set parametric;
-	gnuplot(f);
+	//gnuplot(f);
 	
 }
 
-void init_param_li(FILE *file){
+void init_param_li(FILE *v){
 	float a , c, d , e, k , f;
 	
 	printf("Entrez la valeur de a");
@@ -63,7 +63,7 @@ void init_param_li(FILE *file){
 	scanf("%f", &f);
 	printf("/n");
 	
-	fprintf(file,"%f %f %f %f %f %f",a, c, d, e, k, f);
+	fprintf(v,"%f %f %f %f %f %f",a, c, d, e, k, f);
 	
 }
 
@@ -102,6 +102,28 @@ void traj_p(FILE *file, FILE *v, point p) {
 	fclose(file);
 }
 
+void vitesse_systeme_lorenz(FILE*v, FILE*vit, point *p){
+	float sigma,rho,beta;
+	float x, y, z, vx, vy, vz, module; 
+	float n=tmax/dt;
+    float temps;
+	int c=ceil(n);
+    int i=0;
+    fscanf(v,"%f %f %f",&sigma,&rho,&beta);
+	
+    while(fscanf(f,"%f\t %f\t %f\t %f\n",&temps,&x,&y,&z)!=NULL) {
+    	
+    	if (i<c)
+    	{
+    		vx=sigma*(y-x);
+    		vy=x*(rho-z)-y;
+    		vz=x*y-beta*z;
+    		module=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
+    		fprintf(vit,"%f\t %f\t %f\t %f\t", temps,vx,vy,vz,module);
+    		i++;
+    	}
+    }
+  }
 /*void vitesse_systeme_li(){
 	float a , c, d , e, k , f;
 	fscanf(v,"%f %f %f",&a , &c, &d ,&e, &k , &f);
