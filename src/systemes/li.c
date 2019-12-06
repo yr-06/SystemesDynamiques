@@ -92,17 +92,18 @@ void traj_p(FILE *file, FILE *v, point p) {
 		}
 		/* DOUBLON ALICIA FAUX
 		if ((r*dt)!=tmax) {
-			p.x=p.x+ceil*dx;
-			p.y=p.y+ceil*dy;
-			p.z=p.z+ceil*dz;
-            temps=ceil*dt;
+			p.x=p.x+n*dx;
+			p.y=p.y+n*dy;
+			p.z=p.z+n*dz;
+            temps=tmax;
             fprintf(file,"%f %f %f %f\n", temps, p.x, p.y, p.z);
 		}*/
 	}
 	fclose(file);
 }
 
-void vitesse_systeme_lorenz(FILE*v, FILE*vit, point *p){
+void vitesse_systeme_li(FILE*file, FILE*v, point p){
+	
 	float sigma,rho,beta;
 	float x, y, z, vx, vy, vz, module; 
 	float n=tmax/dt;
@@ -110,6 +111,7 @@ void vitesse_systeme_lorenz(FILE*v, FILE*vit, point *p){
 	int c=ceil(n);
     int i=0;
     fscanf(v,"%f %f %f",&sigma,&rho,&beta);
+    fscanf(file,"%f %f",&tmax,&dt);
 	
     while(fscanf(f,"%f\t %f\t %f\t %f\n",&temps,&x,&y,&z)!=NULL) {
     	
