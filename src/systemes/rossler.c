@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
 #include "../include/point.h"
 #include "../include/rossler.h"
 
@@ -25,7 +26,7 @@ void setup_rossler(FILE*file, point p){
 	vit=fopen("vitesse_rossler.dat","w+");
 	
 	param_init_rossler(v);
-	traj_p(file,v,f,p);
+	traj_p_r(file,v,f,p);
 	vitesse_systeme_rossler(v,f,vit);
 	
 	fclose(v);
@@ -51,7 +52,7 @@ void param_init_rossler(FILE*v){
 	fprintf(v,"%f %f %f\n",a,b,c);
 }
 
-void traj_p(FILE*file, FILE*v,FILE*f,point p)
+void traj_p_r(FILE*file, FILE*v,FILE*f,point p)
 {	float a,b,c,x,y,z,dt,tmax;
 	float dx=(-p.y-p.z)*dt;
 	float dy=(p.x+a*p.y)*dt;
@@ -101,48 +102,3 @@ void vitesse_systeme_rossler(FILE*v,FILE*f,FILE*vit){
     }
   }	
 
-
-/*void vitesse_systeme_rossler(FILE*v,point *p){
-	float a,b,c ;
-	fscanf(v,"%f %f %f",&a,&b,&c);
-
-	float vx, vy,vz, module; 
-	
-	float n=tmax/dt;
-    float temps=0;
-	int c=ceil(n);
-    int r=floor(n);
-    
-    for (int i=0;i<c; i++)
-	{
-		if (i=0)
-			{
-				vx=-p.y-p.z;
-	 			vy=p.x+a*p.y;
-	 			vz=b+p.z(p.x-c);
-	 			module=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
-				fprintf(f,"%.3f\t %.3f\t %.3f\t %.3f\t %.3f\n", temps,vx,vy,vz,module);
-			}
-	
-			else 
-			{
-				vx=vx+i*dx/dt;
-				vy=vy+i*dy/dt;
-				vz=vz+i*dz/dt;
-            	temps=i*dt;
-            	fprintf(f,"%f\t %f\t %f\t %f\t %f\n", temps,vx,vy,vz, module);
-				
-			}
-		
-			if ((r*dt)!=tmax)
-			{
-				vx=vx+c*dx/dt;
-				vy=vy+c*dy/dt;
-				vz=vz+c*dz/dt;
-                temps=c*dt;
-                fprintf(f,"%f %f %f %f %f\n", temps,vx,vy,vz, module);
-			}
-		}
-		fclose(f);
-	}
-*/

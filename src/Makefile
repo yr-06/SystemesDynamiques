@@ -1,8 +1,8 @@
 CC= gcc
-CFLAGS= -Wall -g #-std=c11
-LIB= ../../libs
-LDFLAGS= -lm -lli -lrossler -llorenz -lpoint
-INC= ../../include
+CFLAGS= -Wall -g #-std=c11 -lm
+LIB= ../libs
+LDFLAGS= -lpoint -lli -lrossler -llorenz -lm
+INC= ../include
 EXEC= main.exe
 SRC= main.c
 OBJ= $(SRC:.c=.o)

@@ -7,12 +7,13 @@
 #include "../include/li.h"
 #include "../include/rossler.h"
 
+
 void init_temps(FILE *file){
 	float dt;
 	float tmax;
-	printf("Entrez la valeur de tmax:");
+	printf("Entrez la valeur de tmax en secondes :");
 	scanf("%f", &tmax);
-	printf("Entrez la valeur de dt:");
+	printf("Entrez la valeur de dt en secondes :");
 	scanf("%f", &dt);
 	if(dt>tmax)
 	{
@@ -39,16 +40,16 @@ void choix_systemes(FILE *file, point p){
 	
 	if (systeme == 1){
 		printf("Vous avez choisi le système de Lorentz. \n");
-		SLORENZsetupLorenz(p);
+		setupLorenz(file, p);
 		
 	} if (systeme == 2){
 		printf("Vous avez choisi le système de Rossler. \n");
-		SROSSLERsetup_rossler(p);
+		setup_rossler(file, p);
 		
 		
 	} if (systeme == 3){
 		printf("Vous avez choisi le système de Li. \n");
-		SLIsetup_Li(p);
+		setup_Li(file, p);
 		
 	}
 	else 
@@ -60,18 +61,13 @@ void choix_systemes(FILE *file, point p){
 
 int main(int argc, char *argv[]){
 	FILE*file=NULL;
-	//FILE*result=NULL;
 	file=fopen("paraminit.txt","w+");
-	//result=fopen("Courbe.jpeg","w+");
-	
 	point p;
+	init_temps(file);
 	init_points(&p);
-	printf("Coordonnées du point: %.2f %.2f %.2f \n", p.x, p.y, p.z);
-	
+	//printf("Coordonnées du point: %.2f %.2f %.2f \n", p.x, p.y, p.z);
 	printf("---\n");
 	
-	
-	init_temps(file);
 	choix_systemes(file, p);
 	fclose(file);
 }

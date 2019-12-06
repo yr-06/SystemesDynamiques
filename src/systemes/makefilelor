@@ -10,5 +10,8 @@ OBJ= $(SRC:.c=.o)
 all : $(EXEC)
 
 $(EXEC) : lorenz.c
-	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS) -I $(INC) -L $(LIB)
+	$(CC) $(CFLAGS) lorenz.c	-o	lorenz.exe	-I $(INC)	-L $(LIB)	$(LDFLAGS) 
+
+clean :
+	rm *.exe *.o
 

@@ -2,15 +2,13 @@
 #include <stdlib.h>
 #include "../include/point.h"
 
-point init_points(){
-	point p;
-	
+void init_points(point *p){
 	printf("Définir les coordonnées initiales : \nx= ");
-	scanf("%f", p.x);
+	scanf("%f", (*p).x);
 	printf("y= ");
-	scanf("%f", p.y);
+	scanf("%f", (*p).y);
 	printf("z= ");
-	scanf("%f", p.z);
-	
+	scanf("%f", (*p).z);
+	printf("Coordonnées du point: %f %f %f \n",(*p).x, (*p).y,(*p).z);
 	return p;
 }

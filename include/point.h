@@ -9,6 +9,6 @@ struct point3D {
   
 typedef struct point3D point;
 
-point init_points();
+void init_points(point*p);
 
 #endif
