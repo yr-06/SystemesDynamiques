@@ -36,8 +36,7 @@ void setup_Li(FILE*file, point p){
 	fclose(g);
 	fclose(vit);
 	
-	//set parametric;
-	//gnuplot(g);
+
 	
 }
 
@@ -95,14 +94,7 @@ void traj_p(FILE*file, FILE*v,FILE*g,point p){
            	fprintf(g,"%f\t %f\t %f\t %f\n", temps, p.x, p.y, p.z);
 				
 		}
-		/* DOUBLON ALICIA FAUX
-		if ((r*dt)!=tmax) {
-			p.x=p.x+n*dx;
-			p.y=p.y+n*dy;
-			p.z=p.z+n*dz;
-            temps=tmax;
-            fprintf(g,"%f %f %f %f\n", temps, p.x, p.y, p.z);
-		}*/
+		
 	}
 	
 }

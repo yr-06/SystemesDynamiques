@@ -31,8 +31,7 @@ void setup_rossler(FILE*file, point p){
 	fclose(v);
 	fclose(f);
 	fclose(vit);
-	//set parametric;
-	//gnuplot(f);
+	
 }
 
 void param_init_rossler(FILE*v){
