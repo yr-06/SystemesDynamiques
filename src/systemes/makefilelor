@@ -1,0 +1,14 @@
+CC= gcc
+CFLAGS= -Wall -g #-std=c11
+LIB= ../../libs
+LDFLAGS= -lm -lpoint
+INC= ../../include
+EXEC= lorenz.exe
+SRC= lorenz.c
+OBJ= $(SRC:.c=.o)
+
+all : $(EXEC)
+
+$(EXEC) : lorenz.c
+	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS) -I $(INC) -L $(LIB)
+

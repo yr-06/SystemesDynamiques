@@ -1,0 +1,14 @@
+CC= gcc
+CFLAGS= -Wall -g #-std=c11
+LIB= ../../libs
+LDFLAGS= -lm -lpoint
+INC= ../../include
+EXEC= rossler.exe
+SRC= rossler.c
+OBJ= $(SRC:.c=.o)
+
+all : $(EXEC)
+
+$(EXEC) : rossler.c
+	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS) -I $(INC) -L $(LIB)
+

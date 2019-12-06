@@ -5,9 +5,9 @@
 #include "../include/li.h"
 
 /*Equations de Li:
-dx/dt=a(y-x)+dxz
-dy/dt=kx+fy-xz
-dz/dt=cz+xy-ex**2
+dx/dt=a(y-x)+d*x*z
+dy/dt=k*x+f*y-x*z
+dz/dt=c*z+x*y-e*x^2
 */
 
 /*Valeurs de a,c,d,e,k,f:
@@ -19,20 +19,25 @@ k=55
 f=20
 */
 
-void setup_Li(point *p){
+void setup_Li(FILE*file, point p){
 	
-	FILE*f=NULL;
+	FILE*g=NULL;
 	FILE*v=NULL;
 	FILE*vit=NULL;
-	f=fopen("li.dat","w+");
+	g=fopen("li.dat","w+");
 	v=fopen("Valeurs_li.txt","w+");
 	vit=fopen("vitesse_li.dat","w+");
 	
 	init_param_li(v);
-	traj_p(f, v, p);
+	traj_p(file, v,g,p);
+	vitesse_systeme_li(v,g,vit);
+	
+	fclose(v);
+	fclose(g);
+	fclose(vit);
 	
 	//set parametric;
-	//gnuplot(f);
+	//gnuplot(g);
 	
 }
 
@@ -67,19 +72,19 @@ void init_param_li(FILE *v){
 	
 }
 
-void traj_p(FILE *file, FILE *v, point p) {
+void traj_p(FILE*file, FILE*v,FILE*g,point p){
 	float a, c, d, e, k, f, tmax, dt;
-	fscanf(v, "%f %f %f %f %f %f", a, c, d, e, k, f);
-	fscanf(file, "%f %f", &tmax, &dt);
 	float dx=(a*(p.y-p.x)+d*p.x*p.z)*dt;
 	float dy=(k*p.x+f*p.y-p.x*p.x*p.z)*dt;
 	float dz=(c*p.z+p.x*p.y-e*pow(p.x,2))*dt;
 	float n=tmax/dt;
     float temps;
 	int ce=ceil(n);
+	fscanf(v, "%f %f %f %f %f %f", &a, &c, &d, &e, &k, &f);
+	fscanf(file, "%f %f", &tmax, &dt);
     for (int i=0;i<ce; i++) {
 		if (i==0) {
-			fprintf(file,"%f\t %f\t %f\t %f\n", temps, p.x, p.y, p.z);
+			fprintf(g,"%f\t %f\t %f\t %f\n", temps, p.x, p.y, p.z);
 		}
 		else 
 		{
@@ -87,7 +92,7 @@ void traj_p(FILE *file, FILE *v, point p) {
 			p.y=p.y+i*dy;
 			p.z=p.z+i*dz;
            	temps=i*dt;
-           	fprintf(file,"%f\t %f\t %f\t %f\n", temps, p.x, p.y, p.z);
+           	fprintf(g,"%f\t %f\t %f\t %f\n", temps, p.x, p.y, p.z);
 				
 		}
 		/* DOUBLON ALICIA FAUX
@@ -96,36 +101,29 @@ void traj_p(FILE *file, FILE *v, point p) {
 			p.y=p.y+n*dy;
 			p.z=p.z+n*dz;
             temps=tmax;
-            fprintf(file,"%f %f %f %f\n", temps, p.x, p.y, p.z);
+            fprintf(g,"%f %f %f %f\n", temps, p.x, p.y, p.z);
 		}*/
 	}
-	fclose(file);
+	
 }
 
-void vitesse_systeme_li(FILE*file, FILE*v, point p){
+void vitesse_systeme_li(FILE*v,FILE*g,FILE*vit){
 	
-	float sigma,rho,beta;
 	float x, y, z, vx, vy, vz, module; 
-	float n=tmax/dt;
-    float temps;
-	int c=ceil(n);
-    int i=0;
-    fscanf(v,"%f %f %f",&sigma,&rho,&beta);
-    fscanf(file,"%f %f",&tmax,&dt);
-	
-    while(fscanf(f,"%f\t %f\t %f\t %f\n",&temps,&x,&y,&z)!=NULL) {
+	float a, c, d, e, k, f, temps;
+	fscanf(v, "%f %f %f %f %f %f", &a, &c, &d, &e, &k, &f);
+	while(!feof(g))
+   {
+   		fscanf(g,"%f\t %f\t %f\t %f\n",&temps,&x,&y,&z);
+    	vx=a*(y-x)+d*x*z;
+    	vy=k*x+f*y-x*z;
+    	vz=c*z+x*y-e*pow(x,2);
+    	module=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
+    	fprintf(vit,"%f\t %f\t %f\t %f\t", temps,vx,vy,vz);
+    	fprintf(vit,"%f\n",module);
     	
-    	if (i<c)
-    	{
-    		vx=sigma*(y-x);
-    		vy=x*(rho-z)-y;
-    		vz=x*y-beta*z;
-    		module=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
-    		fprintf(vit,"%f\t %f\t %f\t %f\t", temps,vx,vy,vz,module);
-    		i++;
-    	}
     }
-  }
+}
 /*void vitesse_systeme_li(){
 	float a , c, d , e, k , f;
 	fscanf(v,"%f %f %f",&a , &c, &d ,&e, &k , &f);

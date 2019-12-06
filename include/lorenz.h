@@ -1,9 +1,9 @@
-#ifndef SLORENTZ
-#define SLORENTZ
+#ifndef SLORENZ
+#define SLORENZ
 
-void setupLorentz(point *p);
-float param_init_lorenz(FILE* v);
-float traj_p(FILE*v, FILE*f, point p);
-void vitesse_systeme_lorenz(FILE*f, FILE*v, FILE*vit, point *p);
+void setupLorenz(FILE*file, point p);
+void param_init_lorenz(FILE*v);
+void traj_p(FILE*file, FILE*v,FILE*f,point p);
+void vitesse_systeme_lorenz(FILE*v,FILE*f,FILE*vit);
 
 #endif

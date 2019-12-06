@@ -1,0 +1,14 @@
+CC= gcc
+CFLAGS= -Wall -g #-std=c11
+LIB= ../../libs
+LDFLAGS= -lm -lpoint
+INC= ../../include
+EXEC= li.exe
+SRC= li.c
+OBJ= $(SRC:.c=.o)
+
+all : $(EXEC)
+
+$(EXEC) : li.c
+	$(CC) $< -o $@ $(CFLAGS) $(LDFLAGS) -I $(INC) -L $(LIB)
+

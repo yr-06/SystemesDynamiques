@@ -22,7 +22,7 @@ void init_temps(FILE *file){
 	}
 	else	
 	{
-		fseek(file, SEEK_END);
+		//fseek(file, SEEK_END);
 		fprintf(file,"%f %f\n", tmax, dt);
 	}
 }
@@ -39,16 +39,16 @@ void choix_systemes(FILE *file, point p){
 	
 	if (systeme == 1){
 		printf("Vous avez choisi le système de Lorentz. \n");
-		SLORENTZ.setupLorenz(p);
+		SLORENZsetupLorenz(p);
 		
 	} if (systeme == 2){
 		printf("Vous avez choisi le système de Rossler. \n");
-		SROSSLER.setup_rossler(p);
+		SROSSLERsetup_rossler(p);
 		
 		
 	} if (systeme == 3){
 		printf("Vous avez choisi le système de Li. \n");
-		SLI.setup_Li(p);
+		SLIsetup_Li(p);
 		
 	}
 	else 
@@ -60,16 +60,16 @@ void choix_systemes(FILE *file, point p){
 
 int main(int argc, char *argv[]){
 	FILE*file=NULL;
-	FILE*result=NULL;
+	//FILE*result=NULL;
 	file=fopen("paraminit.txt","w+");
 	//result=fopen("Courbe.jpeg","w+");
 	
 	point p;
 	init_points(&p);
 	printf("Coordonnées du point: %.2f %.2f %.2f \n", p.x, p.y, p.z);
-	fprintf(file, "%.2f %.2f %.2f \n", p.x, p.y, p.z);
+	
 	printf("---\n");
-	//fscanf(file, "%.2f %.2f %.2f \n", &p.x, &p.y, &p.z);
+	
 	
 	init_temps(file);
 	choix_systemes(file, p);
