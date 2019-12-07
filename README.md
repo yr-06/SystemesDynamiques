@@ -29,3 +29,8 @@ On fera de même avec les bibliothèques des différents systèmes dynamiques se
 
 Une fois réaliser on se place dans le sous-dossier src et on entre la commande make avant de pouvoir utiliser l'executable.
 
+Si le programme n'affiche rien il est probable qu'il faille réinstaller gnuplot avec les commandes suivantes en étant dans le répertoire SystemesDynamiques :
+$cd gnuplot-5.2.8 -v
+$./configure
+$make
+$sudo make install

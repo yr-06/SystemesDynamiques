@@ -31,6 +31,8 @@ void setup_Li(FILE*file, FILE*p){
 	traj_p_li(file, v,g,p);
 	fclose(g);
 	remove("Valeurs_li.txt");
+	system("gnuplot -persist ../src/systemes/Vit_li.gnu");
+	system("gnuplot -persist ../src/systemes/li.gnu");
 	
 }
 
@@ -75,6 +77,7 @@ void traj_p_li(FILE*file, FILE*v,FILE*g, FILE*p){
 	fscanf(file, "%f %f", &tmax, &dt);
 	float px,py,pz;
 	fscanf(p,"%f %f %f", &px, &py, &pz);
+	float t[3];
 	float x,y,z,vit,vx,vy,vz;
 	float dx=(a*(py-px)+d*px*pz)*dt;
 	float dy=(k*px+f*py-px*px*pz)*dt;
@@ -86,24 +89,30 @@ void traj_p_li(FILE*file, FILE*v,FILE*g, FILE*p){
     for (int i=0;i<=ce; i++) 
     {
 		fseek(g,0,SEEK_END);
-		x=px+i*dx;
-		y=py+i*dy;
-		z=pz+i*dz;
+		x=px+dx;
+		y=py+dy;
+		z=pz+dz;
 		vx=a*(y-x)+d*x*z;
 		vy=k*x+f*y-x*z;
 		vz=c*z+x*y-e*pow(x,2);
         temps=i*dt;
         vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
         fprintf(g,"%f\t %f\t %f\t %f\t %f\n", temps,x,y,z,vit);
+        t[0]=x;
+        t[1]=y;
+        t[2]=z;
+        px=t[0];
+        py=t[1];
+        pz=t[2];
 				
 		}
 		
 	if (ce!=n)
 	{
 		fseek(g,0,SEEK_END);
-		x=px+n*dx;
-		y=py+n*dy;
-		z=pz+n*dz;
+		x=px+dx;
+		y=py+dy;
+		z=pz+dz;
 		vx=a*(y-x)+d*x*z;
 		vy=k*x+f*y-x*z;
 		vz=c*z+x*y-e*pow(x,2);

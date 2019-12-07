@@ -8,26 +8,6 @@
 #include "../include/li.h"
 #include "../include/rossler.h"
 
-
-/*void init_temps(FILE *file){
-	float dt;
-	float tmax;
-	printf("Entrez la valeur de tmax en secondes :");
-	scanf("%f", &tmax);
-	printf("Entrez la valeur de dt en secondes :");
-	scanf("%f", &dt);
-	if(dt>tmax)
-	{
-		printf("Cette valeur est superieure  au temps maximal\n");
-		printf("Veuillez entrer de nouvelles valeurs :\n");
-		init_temps(file);
-	}
-	else	
-	{
-		fseek(file,0, SEEK_END);
-		fprintf(file,"%f %f\n", tmax, dt);
-	}
-}*/
 void choix_systemes(FILE *file, FILE*p){
 	int systeme;
 	float dt,tmax;
@@ -39,7 +19,7 @@ void choix_systemes(FILE *file, FILE*p){
 	fscanf(file, "%f %f", &tmax, &dt);
 	
 	if (systeme == 1){
-		printf("Vous avez choisi le système de Lorentz. \n");
+		printf("Vous avez choisi le système de Lorenz. \n");
 		setupLorenz(file, p);
 		
 	} if (systeme == 2){

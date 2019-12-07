@@ -30,6 +30,8 @@ void setup_rossler(FILE*file, FILE*p){
 	traj_p_r(file,v,f,p);
 	fclose(f);
 	remove("Valeurs_ross.txt");
+	system("gnuplot -persist ../src/systemes/Vit_rossler.gnu");
+	system("gnuplot -persist ../src/systemes/rossler.gnu");
 }
 
 void param_init_rossler(FILE*v){
@@ -60,6 +62,7 @@ void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
 	fscanf(file,"%f %f", &tmax, &dt);
 	float px,py,pz,vx,vy,vz,vit;
 	fscanf(p,"%f %f %f", &px, &py, &pz);
+	float t[3];
 	float x,y,z ;
 	float dx=(-py-pz)*dt;
 	float dy=(px+a*py)*dt;
@@ -71,25 +74,30 @@ void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
     for (int i=0;i<=h; i++)
 	{
 		fseek(f,0,SEEK_END);
-		x=px+i*dx;
-		y=py+i*dy;
-		z=pz+i*dz;
+		x=px+dx;
+		y=py+dy;
+		z=pz+dz;
 		vx=-y-z;
 		vy=x+a*y;
 		vz=b+z*(x-c);
 		vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
         temps=i*dt;
         fprintf(f,"%f\t %f\t %f\t %f\t %f\n", temps,x,y,z,vit);
-        
+        t[0]=x;
+        t[1]=y;
+        t[2]=z;
+        px=t[0];
+        py=t[1];
+        pz=t[2];
 				
 	}
 		
 	if (h!=n)
 	{
 		fseek(f,0,SEEK_END);
-		x=px+n*dx;
-		y=py+n*dy;
-		z=pz+n*dz;
+		x=px+dx;
+		y=py+dy;
+		z=pz+dz;
 		vx=-y-z;
 		vy=x+a*y;
 		vz=b+z*(x-c);
