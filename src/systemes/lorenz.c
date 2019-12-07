@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "../include/point.h"
+#include "../include/temps.h"
 #include "../include/lorenz.h"
 
 
@@ -21,6 +22,8 @@ void setupLorenz(FILE*file, FILE*p) {
 	
 	param_init_lorenz(v);
 	traj_p_lo(file,v,f,p);
+	fclose(f);
+	remove("Valeurs_lor.txt");
 	
 }
 
@@ -44,7 +47,17 @@ void param_init_lorenz(FILE*v) {
 	
 
 void traj_p_lo(FILE*file, FILE*v,FILE*f,FILE*p){
-	float sigma, rho, beta , x , y , z , dt ,tmax , px , py , pz, vit;
+	fseek(file,0,SEEK_SET);
+	fseek(v,0,SEEK_SET);
+	fseek(p,0,SEEK_SET);
+	float sigma, rho, beta;
+	fscanf(v,"%f %f %f",&sigma,&rho,&beta);
+	float tmax , dt;
+	fscanf(file,"%f %f", &tmax, &dt);
+	float px , py , pz, vit;
+	fscanf(p,"%f %f %f", &px, &py, &pz);
+    
+	float x , y , z; 
 	float dx=(sigma*(py-px))*dt;
 	float dy=(((px)*(rho-pz))-py)*dt;
 	float dz=((px*py)-beta*pz)*dt;
@@ -53,9 +66,6 @@ void traj_p_lo(FILE*file, FILE*v,FILE*f,FILE*p){
     float temps;
 	int h=ceil(n);
     int r=floor(n);
-    fscanf(v,"%f %f %f",&sigma,&rho,&beta);
-	fscanf(file,"%f %f", &tmax, &dt);
-	fscanf(p,"%f %f %f", &px, &py, &pz);
     
     for (int i=0;i<h; i++) {
     	fseek(f,0,SEEK_END);
@@ -70,7 +80,7 @@ void traj_p_lo(FILE*file, FILE*v,FILE*f,FILE*p){
         fprintf(f,"%f\t %f\t %f\t %f\t %f\n", temps,x,y,z,vit);
  	}
 		
-	if ((r*dt)!=tmax) {
+	if ((h*dt)!=tmax) {
 		fseek(f,0,SEEK_END);
 		x=px+n*dx;
 		y=py+n*dy;

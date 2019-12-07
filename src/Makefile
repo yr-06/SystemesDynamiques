@@ -1,7 +1,7 @@
 CC= gcc
 CFLAGS= -Wall -g #-std=c11 -lm
 LIB= ../libs
-LDFLAGS= -lpoint -lli -lrossler -llorenz -lm
+LDFLAGS= -lpoint -lli -lrossler -llorenz -ltemps -lm
 INC= ../include
 EXEC= main.exe
 SRC= main.c

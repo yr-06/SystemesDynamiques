@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <math.h>
 
-//#include "../include/point.h"
+#include "../include/point.h"
+#include "../include/temps.h"
 #include "../include/lorenz.h"
 #include "../include/li.h"
 #include "../include/rossler.h"
 
 
-void init_temps(FILE *file){
+/*void init_temps(FILE *file){
 	float dt;
 	float tmax;
 	printf("Entrez la valeur de tmax en secondes :");
@@ -26,8 +27,7 @@ void init_temps(FILE *file){
 		fseek(file,0, SEEK_END);
 		fprintf(file,"%f %f\n", tmax, dt);
 	}
-}
-
+}*/
 void choix_systemes(FILE *file, FILE*p){
 	int systeme;
 	float dt,tmax;
@@ -55,6 +55,7 @@ void choix_systemes(FILE *file, FILE*p){
 	else 
 	{
 		printf("Ce système n'existe pas. \n");
+		printf("\n");
 		choix_systemes(file, p);
 	}
 }
@@ -71,7 +72,5 @@ int main(int argc, char *argv[]){
 	
 	choix_systemes(file,p);
 	
-	fclose(file);
-	fclose(p);
-	
+		
 }

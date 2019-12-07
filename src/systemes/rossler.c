@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "../include/point.h"
+#include "../include/temps.h"
 #include "../include/rossler.h"
 
 /*Equation de Rossler:
@@ -27,33 +28,39 @@ void setup_rossler(FILE*file, FILE*p){
 	
 	param_init_rossler(v);
 	traj_p_r(file,v,f,p);
-	
-	
-	fclose(v);
 	fclose(f);
-
-	
+	remove("Valeurs_ross.txt");
 }
 
 void param_init_rossler(FILE*v){
 	
 	float a,b,c;
 	
-	printf("Entrez la valeur de a:");
+	printf("Entrez la valeur de a: a=");
 	scanf("%f", &a);
 	printf("/n");
 	
-	printf("Entrez la valeur de b:");
+	printf("Entrez la valeur de b: b=");
 	scanf("%f", &b);
 	printf("/n");
 	
-	printf("Entrez la valeur de c");
+	printf("Entrez la valeur de c: c=");
 	scanf("%f", &c);
 	fprintf(v,"%f %f %f\n",a,b,c);
 }
 
 void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
-{	float a,b,c,x,y,z,px,py,pz,dt,tmax,vx,vy,vz,vit;
+{
+	fseek(file,0,SEEK_SET);
+	fseek(v,0,SEEK_SET);
+	fseek(p,0,SEEK_SET);
+	float a,b,c;
+	fscanf(v,"%f %f %f",&a,&b,&c);
+	float tmax,dt;
+	fscanf(file,"%f %f", &tmax, &dt);
+	float px,py,pz,vx,vy,vz,vit;
+	fscanf(p,"%f %f %f", &px, &py, &pz);
+	float x,y,z ;
 	float dx=(-py-pz)*dt;
 	float dy=(px+a*py)*dt;
 	float dz=(b+(pz*px-c))*dt;
@@ -61,9 +68,6 @@ void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
     float temps;
 	int h=ceil(n);
     int r=floor(n);
-    fscanf(v,"%f %f %f",&a,&b,&c);
-    fscanf(file,"%f %f", &tmax, &dt);
-    fscanf(p,"%f %f %f", &px, &py, &pz);
     for (int i=0;i<h; i++)
 	{
 		fseek(f,0,SEEK_END);
@@ -75,11 +79,12 @@ void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
 		vz=b+z*(x-c);
 		vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
         temps=i*dt;
-        fprintf(f,"%f\t %f\t %f\t %f\n", temps,x,y,z,vit);
+        fprintf(f,"%f\t %f\t %f\t %f\t %f\n", temps,x,y,z,vit);
+        
 				
 	}
 		
-	if ((r*dt)!=tmax)
+	if ((h*dt)!=tmax)
 	{
 		fseek(f,0,SEEK_END);
 		x=px+n*dx;
@@ -89,7 +94,8 @@ void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
 		vy=x+a*y;
 		vz=b+z*(x-c);
         vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
-        fprintf(f,"%f\t %f\ %f\t %f\t %f\n", tmax,x,y,z,vit);
+        fprintf(f,"%f\t %f\t %f\t %f\t %f\n", temps,x,y,z,vit);
+       
+        
 	}
 }
-	
