@@ -6,7 +6,7 @@
 #include "../include/li.h"
 
 /*Equations de Li:
-dx/dt=a(y-x)+d*x*z
+dx/dt=a*(y-x)+d*x*z
 dy/dt=k*x+f*y-x*z
 dz/dt=c*z+x*y-e*x^2
 */
@@ -20,7 +20,7 @@ k=55
 f=20
 */
 
-void setup_Li(FILE*file, point p){
+void setup_Li(FILE*file, FILE*p){
 	
 	FILE*g=NULL;
 	FILE*v=NULL;
@@ -31,13 +31,8 @@ void setup_Li(FILE*file, point p){
 	
 	init_param_li(v);
 	traj_p_li(file, v,g,p);
-	vitesse_systeme_li(v,g,vit);
 	
-	fclose(v);
-	fclose(g);
-	fclose(vit);
 	
-
 	
 }
 
@@ -72,53 +67,46 @@ void init_param_li(FILE *v){
 	
 }
 
-void traj_p_li(FILE*file, FILE*v,FILE*g,point p){
+void traj_p_li(FILE*file, FILE*v,FILE*g, FILE*p){
 	float a, c, d, e, k, f, tmax, dt;
-	float x,y,z ;
-	float dx=(a*(p.y-p.x)+d*p.x*p.z)*dt;
-	float dy=(k*p.x+f*p.y-p.x*p.x*p.z)*dt;
-	float dz=(c*p.z+p.x*p.y-e*pow(p.x,2))*dt;
+	float x,y,z,px,py,pz,vit,vx,vy,vz;
+	float dx=(a*(py-px)+d*px*pz)*dt;
+	float dy=(k*px+f*py-px*px*pz)*dt;
+	float dz=(c*pz+px*py-e*pow(px,2))*dt;
 	float n=tmax/dt;
     float temps;
 	int ce=ceil(n);
 	int r=floor(n);
 	fscanf(v, "%f %f %f %f %f %f", &a, &c, &d, &e, &k, &f);
 	fscanf(file, "%f %f", &tmax, &dt);
+	fscanf(p,"%f %f %f", &px, &py, &pz);
     for (int i=0;i<ce; i++) 
     {
-		x=p.x+i*dx;
-		y=p.y+i*dy;
-		z=p.z+i*dz;
+		fseek(g,0,SEEK_END);
+		x=px+i*dx;
+		y=py+i*dy;
+		z=pz+i*dz;
+		vx=a*(y-x)+d*x*z;
+		vy=k*x+f*y-x*z;
+		vz=c*z+x*y-e*pow(x,2);
         temps=i*dt;
-        fprintf(g,"%f\t %f\t %f\t %f\n", temps,x,y,z);
+        vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
+        fprintf(g,"%f\t %f\t %f\t %f\t %f\n", temps,x,y,z,vit);
 				
 		}
 		
 	if ((r*dt)!=tmax)
 	{
-		x=p.x+n*dx;
-		y=p.y+n*dy;
-		z=p.z+n*dz;
-        temps=tmax;
-        fprintf(g,"%f\t %f\ %f\t %f\n", temps,x,y,z);
+		fseek(g,0,SEEK_END);
+		x=px+n*dx;
+		y=py+n*dy;
+		z=pz+n*dz;
+		vx=a*(y-x)+d*x*z;
+		vy=k*x+f*y-x*z;
+		vz=c*z+x*y-e*pow(x,2);
+        vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
+        fprintf(g,"%f\t %f\ %f\t %f\t %f\n", tmax,x,y,z,vit);
 	}
 	
 }
 
-void vitesse_systeme_li(FILE*v,FILE*g,FILE*vit){
-	
-	float x, y, z, vx, vy, vz, module; 
-	float a, c, d, e, k, f, temps;
-	fscanf(v,"%f %f %f %f %f %f", &a, &c, &d, &e, &k, &f);
-	while(!feof(g))
-   {
-   		fscanf(g,"%f\t %f\t %f\t %f\n",&temps,&x,&y,&z);
-    	vx=a*(y-x)+d*x*z;
-    	vy=k*x+f*y-x*z;
-    	vz=c*z+x*y-e*pow(x,2);
-    	module=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
-    	fprintf(vit,"%f\t %f\t %f\t %f\t", temps,vx,vy,vz);
-    	fprintf(vit,"%f\n",module);
-    	
-    }
-}

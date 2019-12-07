@@ -14,24 +14,24 @@ dz/dt=b+z(x-c)
 /*Valeurs de a, b, c possibles:
 a=0.2 ou 0.1
 b=0.2 ou 0.1
-c=5.7 ou c=14*/ 
+c=5.7 ou c=14
 
-void setup_rossler(FILE*file, point p){
+*/ 
+
+void setup_rossler(FILE*file, FILE*p){
 
 	FILE*f=NULL;
 	FILE*v=NULL;
-	FILE*vit=NULL;
 	f=fopen("rossler.dat","w+");
 	v=fopen("Valeurs_ross.txt","w+");
-	vit=fopen("vitesse_rossler.dat","w+");
 	
 	param_init_rossler(v);
 	traj_p_r(file,v,f,p);
-	vitesse_systeme_rossler(v,f,vit);
+	
 	
 	fclose(v);
 	fclose(f);
-	fclose(vit);
+
 	
 }
 
@@ -52,53 +52,44 @@ void param_init_rossler(FILE*v){
 	fprintf(v,"%f %f %f\n",a,b,c);
 }
 
-void traj_p_r(FILE*file, FILE*v,FILE*f,point p)
-{	float a,b,c,x,y,z,dt,tmax;
-	float dx=(-p.y-p.z)*dt;
-	float dy=(p.x+a*p.y)*dt;
-	float dz=(b+(p.z*p.x-c))*dt;
+void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
+{	float a,b,c,x,y,z,px,py,pz,dt,tmax,vx,vy,vz,vit;
+	float dx=(-py-pz)*dt;
+	float dy=(px+a*py)*dt;
+	float dz=(b+(pz*px-c))*dt;
 	float n=tmax/dt;
     float temps;
 	int h=ceil(n);
     int r=floor(n);
     fscanf(v,"%f %f %f",&a,&b,&c);
     fscanf(file,"%f %f", &tmax, &dt);
-    
+    fscanf(p,"%f %f %f", &px, &py, &pz);
     for (int i=0;i<h; i++)
 	{
-		x=p.x+i*dx;
-		y=p.y+i*dy;
-		z=p.z+i*dz;
+		fseek(f,0,SEEK_END);
+		x=px+i*dx;
+		y=py+i*dy;
+		z=pz+i*dz;
+		vx=-y-z;
+		vy=x+a*y;
+		vz=b+z*(x-c);
+		vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
         temps=i*dt;
-        fprintf(f,"%f\t %f\t %f\t %f\n", temps,x,y,z);
+        fprintf(f,"%f\t %f\t %f\t %f\n", temps,x,y,z,vit);
 				
 	}
 		
 	if ((r*dt)!=tmax)
 	{
-		x=p.x+n*dx;
-		y=p.y+n*dy;
-		z=p.z+n*dz;
-        temps=tmax;
-        fprintf(f,"%f\t %f\ %f\t %f\n", temps,x,y,z);
+		fseek(f,0,SEEK_END);
+		x=px+n*dx;
+		y=py+n*dy;
+		z=pz+n*dz;
+		vx=-y-z;
+		vy=x+a*y;
+		vz=b+z*(x-c);
+        vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
+        fprintf(f,"%f\t %f\ %f\t %f\t %f\n", tmax,x,y,z,vit);
 	}
 }
 	
-void vitesse_systeme_rossler(FILE*v,FILE*f,FILE*vit){
-	float a,b,c;
-	float x, y, z, vx, vy, vz, module; 
-	float temps;
-    fscanf(v,"%f %f %f",&a,&b,&c);
- 
-	while(!feof(f))
-   {	fscanf(f,"%f\t %f\t %f\t %f\n",&temps,&x,&y,&z);
-    	vx=-y-z;
-    	vy=x+a*y;
-    	vz=b+z*(x-c);
-    	module=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
-    	fprintf(vit,"%f\t %f\t %f\t %f\t", temps,vx,vy,vz);
-    	fprintf(vit,"%f\n",module);
-    	
-    }
-  }	
-

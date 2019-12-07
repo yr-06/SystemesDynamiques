@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "../include/point.h"
+//#include "../include/point.h"
 #include "../include/lorenz.h"
 #include "../include/li.h"
 #include "../include/rossler.h"
@@ -17,18 +17,18 @@ void init_temps(FILE *file){
 	scanf("%f", &dt);
 	if(dt>tmax)
 	{
-		printf("Cette valeur est superieur au temps maximal\n");
-		printf("Veuiller entrer de nouvelles valeurs :\n");
+		printf("Cette valeur est superieure  au temps maximal\n");
+		printf("Veuillez entrer de nouvelles valeurs :\n");
 		init_temps(file);
 	}
 	else	
 	{
-		//fseek(file, SEEK_END);
+		fseek(file,0, SEEK_END);
 		fprintf(file,"%f %f\n", tmax, dt);
 	}
 }
 
-void choix_systemes(FILE *file, point p){
+void choix_systemes(FILE *file, FILE*p){
 	int systeme;
 	float dt,tmax;
 	printf("1 = Système de Lorenz \n");
@@ -61,13 +61,17 @@ void choix_systemes(FILE *file, point p){
 
 int main(int argc, char *argv[]){
 	FILE*file=NULL;
+	FILE*p=NULL;
 	file=fopen("paraminit.txt","w+");
-	point p;
+	p=fopen("Coord_p.txt","w+");
+	init_points(p);
 	init_temps(file);
-	init_points(&p);
-	//printf("Coordonnées du point: %.2f %.2f %.2f \n", p.x, p.y, p.z);
+	
 	printf("---\n");
 	
-	choix_systemes(file, p);
+	choix_systemes(file,p);
+	
 	fclose(file);
+	fclose(p);
+	
 }

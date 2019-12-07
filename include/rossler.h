@@ -1,8 +1,8 @@
 #ifndef SROSSLER
 #define SROSSLER
 
-void setup_rossler(FILE*file, point p);
+void setup_rossler(FILE*file, FILE*p);
 void param_init_rossler(FILE*v);
-void traj_p_r(FILE*file, FILE*v,FILE*f,point p);
-void vitesse_systeme_rossler(FILE*v,FILE*f,FILE*vit);
+void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p);
+
 #endif

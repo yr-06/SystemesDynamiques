@@ -2,22 +2,21 @@
 #include <stdlib.h>
 #include "../include/point.h"
 
-point init_points(point *p){
-	printf("Définir les coordonnées initiales : \nx= ");
-	scanf("%f", p->x);
+void init_points(FILE*p){
+	float px, py, pz;
+	printf("Entrez une coordonnée selon x : x=");
+	scanf("%f",&px);
+	printf("\n");
 	
-	printf("%f %f %f/n", p->x, p->y, p->z);
+	printf("Entrez une coordonnée selon y : y=");
+	scanf("%f",&py);
+	printf("\n");
 	
-	printf("y= ");
-	scanf("%f", p->y);
+	printf("Entrez une coordonnée selon z : z=");
+	scanf("%f",&pz);
+	printf("\n");
 	
-	printf("%f %f %f/n", p->x, p->y, p->z);
 	
-	printf("z= ");
-	scanf("%f", p->z);
-	
-	printf("%f %f %f/n", p->x, p->y, p->z);
-	
-	printf("Coordonnées du point: %f %f %f\n",(*p).x, (*p).y, (*p).z);
+	fprintf(p,"%f %f %f", px, py,pz);
 	
 }
