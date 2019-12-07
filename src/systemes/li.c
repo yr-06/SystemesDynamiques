@@ -39,27 +39,27 @@ void init_param_li(FILE *v){
 	
 	printf("Entrez la valeur de a : a=");
 	scanf("%f", &a);
-	printf("/n");
+	printf("\n");
 	
 	printf("Entrez la valeur de c: c=");
 	scanf("%f", &c);
-	printf("/n");
+	printf("\n");
 	
 	printf("Entrez la valeur de d: d=");
 	scanf("%f", &d);
-	printf("/n");
+	printf("\n");
 	
 	printf("Entrez la valeur de e: e=");
 	scanf("%f", &e);
-	printf("/n");
+	printf("\n");
 	
 	printf("Entrez la valeur de k: k=");
 	scanf("%f", &k);
-	printf("/n");
+	printf("\n");
 	
 	printf("Entrez la valeur de f: f=");
 	scanf("%f", &f);
-	printf("/n");
+	printf("\n");
 	
 	fprintf(v,"%f %f %f %f %f %f",a, c, d, e, k, f);
 	
@@ -82,9 +82,8 @@ void traj_p_li(FILE*file, FILE*v,FILE*g, FILE*p){
 	float n=tmax/dt;
     float temps;
 	int ce=ceil(n);
-	int r=floor(n);
 	
-    for (int i=0;i<ce; i++) 
+    for (int i=0;i<=ce; i++) 
     {
 		fseek(g,0,SEEK_END);
 		x=px+i*dx;
@@ -99,7 +98,7 @@ void traj_p_li(FILE*file, FILE*v,FILE*g, FILE*p){
 				
 		}
 		
-	if ((ce*dt)!=tmax)
+	if (ce!=n)
 	{
 		fseek(g,0,SEEK_END);
 		x=px+n*dx;
@@ -109,7 +108,7 @@ void traj_p_li(FILE*file, FILE*v,FILE*g, FILE*p){
 		vy=k*x+f*y-x*z;
 		vz=c*z+x*y-e*pow(x,2);
         vit=sqrt(pow(vx,2)+pow(vy,2)+pow(vz,2));
-        fprintf(g,"%f\t %f\ %f\t %f\t %f\n", tmax,x,y,z,vit);
+        fprintf(g,"%f\t %f\t %f\t %f\t %f\n", tmax,x,y,z,vit);
 	}
 	
 }

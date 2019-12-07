@@ -65,9 +65,8 @@ void traj_p_lo(FILE*file, FILE*v,FILE*f,FILE*p){
 	float n=tmax/dt;
     float temps;
 	int h=ceil(n);
-    int r=floor(n);
-    
-    for (int i=0;i<h; i++) {
+   
+    for (int i=0;i<=h; i++) {
     	fseek(f,0,SEEK_END);
 		x=px+i*dx;
 		y=py+i*dy;
@@ -80,7 +79,7 @@ void traj_p_lo(FILE*file, FILE*v,FILE*f,FILE*p){
         fprintf(f,"%f\t %f\t %f\t %f\t %f\n", temps,x,y,z,vit);
  	}
 		
-	if ((h*dt)!=tmax) {
+	if (h!=n) {
 		fseek(f,0,SEEK_END);
 		x=px+n*dx;
 		y=py+n*dy;

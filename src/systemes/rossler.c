@@ -38,11 +38,11 @@ void param_init_rossler(FILE*v){
 	
 	printf("Entrez la valeur de a: a=");
 	scanf("%f", &a);
-	printf("/n");
+	printf("\n");
 	
 	printf("Entrez la valeur de b: b=");
 	scanf("%f", &b);
-	printf("/n");
+	printf("\n");
 	
 	printf("Entrez la valeur de c: c=");
 	scanf("%f", &c);
@@ -67,8 +67,8 @@ void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
 	float n=tmax/dt;
     float temps;
 	int h=ceil(n);
-    int r=floor(n);
-    for (int i=0;i<h; i++)
+   
+    for (int i=0;i<=h; i++)
 	{
 		fseek(f,0,SEEK_END);
 		x=px+i*dx;
@@ -84,7 +84,7 @@ void traj_p_r(FILE*file, FILE*v,FILE*f,FILE*p)
 				
 	}
 		
-	if ((h*dt)!=tmax)
+	if (h!=n)
 	{
 		fseek(f,0,SEEK_END);
 		x=px+n*dx;
